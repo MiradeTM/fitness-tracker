@@ -4,8 +4,8 @@ const logger = require("morgan");
 const mongoose = require("mongoose");
 
 
-const apiRoutes = require("./routes/api-routes")
-const htmlRoutes = require("./routes/html-routes")
+const apiRoutes = require("./routes/api.js")
+const htmlRoutes = require("./routes/view.js")
 
 const PORT = process.env.PORT || 3000;
 
