@@ -1,30 +1,31 @@
-  
 const express = require("express");
-const logger = require("morgan");
+const morgan = require("morgan");
 const mongoose = require("mongoose");
 
-
-const apiRoutes = require("./routes/api.js")
-const htmlRoutes = require("./routes/view.js")
-
+// Express App
+const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(morgan("dev"));
 
-const app = express();
-
-app.use(logger("dev"));
-
+// data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static('public'));
 
-app.use(express.static("public"));
+// db mongo
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/Workout-Tracker";
+mongoose.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true
+})
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", { useNewUrlParser: true });
+// Creating Routes
+require("./routes/api.js")(app);
+require("./routes/view.js")(app);
 
-app.use(apiRoutes);
-app.use(htmlRoutes);
-
-
-app.listen(PORT, () => {
-  console.log(`App running on port ${PORT}!`);
+// Starts the server to begin listening
+app.listen(PORT, function () {
+    console.log(`App listening on Port ${PORT}!`);
 });
