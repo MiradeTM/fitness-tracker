@@ -25,6 +25,7 @@ router.put("/api/workouts/:id", async (req, res) => {
 });
 
 router.post("/api/workouts", async (req, res) => {
+    console.log("workouts hit!")
     try {
         const dbWorkout = await Workout.create(req.body)
         res.json(dbWorkout)
